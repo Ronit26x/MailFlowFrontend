@@ -1,0 +1,10 @@
+.miniAccountSettings{
+    display: none;
+}
+
+.miniAccountSettings-active{
+    display: absolute;
+    left:0;
+    background-color: white;
+    box-shadow: 0px 0px 30px 5px rgba(37, 37, 37, 0.1);
+}
