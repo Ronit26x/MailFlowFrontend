@@ -31,15 +31,20 @@ export default function Login(){
         const data = Object.fromEntries(formData);
         const loginDetails = JSON.stringify(data);
 
-        axios.post('http://localhost:4000/signin', data)
+        axios.post('http://localhost:4000/signin', data, {
+            headers: {
+            'x-api-key': "54321a",
+          }
+        })
         .then(response => {
-            console.log(response.data.token);
-            Cookies.set('Authorization', response.data.token, { expires: 1 }); 
-            console.log(response.status)          
+            Cookies.set('Authorization', response.data.token, { expires: 1 });           
             if(response.data.token && response.status == 200){
                 Cookies.set('isLoggedIn', true, {
                     expires: 1,
-                    path: '/'
+                    path: '/',
+                    // httpOnly: true, // Cookie cannot be accessed by client-side JavaScript
+                    // secure: true, // Cookie can only be sent over HTTPS (requires SSL/TLS)
+                    // sameSite: 'strict',
                 });
                 router.push('/pages/Dashboard')
                 setLoginError(false)

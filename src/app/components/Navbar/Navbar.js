@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
+import { Link as ScrollLink } from 'react-scroll';
 
 import './Navbar.css'
 
@@ -23,14 +24,16 @@ export default function Navbar(){
         }, 1000) 
     }, [])
 
-    // const accountButton = document.querySelector('.accountButton');
-    // const miniAccountSettings = document.querySelector('.miniAccountSettings')
-    // accountButton.addEventListener('click', ()=>{
-    //     miniAccountSettings.classList.add('miniAccountSettings-active');
-    // })
-
+    useEffect(()=>{
+        const accountButton = document.querySelector('.accountButton');
+        const accountMenu = document.querySelector('.accountMenu');
+        accountButton.addEventListener('click', ()=>{
+            accountMenu.classList.toggle('accountMenu-active')
+            accountButton.classList.toggle('accountButton-active')
+        })
+    }, [])
     return(
-        <div className="h-[10vh] fixed top-0 left-0 flex items-center justify-between w-full px-16 border-b border-gray-500 z-10 bg-white">
+        <div className="h-[10vh] fixed top-0 left-0 flex items-center justify-between w-full px-16 border-b border-[] z-10 bg-white">
             <Link href="/" className=" text-3xl font-semibold">mailflow.<span className="text-blue-700">ai</span></Link>
 
             {
@@ -44,13 +47,22 @@ export default function Navbar(){
             {
                 loggedIn && 
                 <ul className="flex items-center gap-6">
-                    <li className="text-xl cursor-pointer" >Paraphraser</li>
-                    <li className="text-xl cursor-pointer" >Drafts</li>
+                    <Link href="/pages/Dashboard" className="text-xl cursor-pointer">Dashboard</Link>
+                    {/* <ScrollLink to="paraphraserSection" smooth={true} duration={400}>
+                        <div>
+                            <Link href="/pages/Dashboard" className="text-xl cursor-pointer" >Paraphraser</Link>
+                        </div>
+                    </ScrollLink>
+                    <ScrollLink to="draftsSection" smooth={true} duration={400}>
+                        <div>
+                            <Link href="/pages/Dashboard" className="text-xl cursor-pointer" >Drafts</Link>
+                        </div>   
+                    </ScrollLink> */}
                     <div className="relative">
-                        <li className="accountButton cursor-pointer text-xl rounded-full bg-blue-700 px-8 py-3 text-white">Account</li>
-                        <div className="miniAccountSettings">
-                            <p>Open Account</p>
-                            <p>Logout</p>
+                        <p className="accountButton ">Account</p>
+                        <div className="accountMenu">
+                            <p className=" py-2 cursor-pointer hover:text-blue-700">Open Account</p>
+                            <p className=" py-2 cursor-pointer hover:text-blue-700">Logout</p>
                         </div>
                     </div>
                     

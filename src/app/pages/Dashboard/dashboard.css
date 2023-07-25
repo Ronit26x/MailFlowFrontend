@@ -13,6 +13,13 @@
     top: 16px;
     left:16px;
 }
+
+.moodSelector{
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
   
 .moodSelector textarea{
     padding-top: 12.5px;

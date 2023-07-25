@@ -19,8 +19,6 @@ export default function Home() {
         <div className='w-[100%]'>
           <h1 className="text-7xl font-bold">mailflow.<span className="text-blue-700">ai</span></h1>
           <p className='mt-8 text-xl'>Consequat et qui magna aliqua consectetur. Occaecat ullamco incididunt dolor nostrud reprehenderit in ex deserunt exercitation enim veniam veniam. Cillum et amet ullamco dolor nostrud consectetur nostrud dolor elit. Quis veniam proident est reprehenderit quis. Sit ut in qui eu ea exercitation consectetur magna ullamco proident magna laboris eu et.</p>
-
-          <Link href="./pages/Dashboard">See your Dashboard</Link>
           <br/>
           <Link href="./pages/Account">See your Account</Link>
         </div>
