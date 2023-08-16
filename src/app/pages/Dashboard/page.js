@@ -10,6 +10,7 @@ import Drafts from './components/Drafts/Drafts';
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
+import SendEmail from './components/sendEmail/SendEmail';
 
 const axios = require('axios');
 
@@ -28,6 +29,12 @@ export default function Dashboard(){
             setLoggedIn(isLoggedIn)  
         }, 1000) 
     }, [])
+
+    const [sendEmailActive, setSendEmailActive] = useState(false);
+    const sendEmailHandler = () =>{
+        setSendEmailActive(true);
+        sendEmailActive?document.body.style.overflow="hidden" : document.body.style.overflow="auto"
+    }
 
     const form = document.querySelector('.promptForm');
     const finalEmail = document.querySelector('.paraphrasedEmail')
@@ -48,9 +55,10 @@ export default function Dashboard(){
     const draftAdditionHandler = (req,res) =>{
         const draftEmail = finalEmail.innerHTML;
         const EmailTitle = document.querySelector('.paraphrasedEmailTitle').value;
+ 
         const draft = {
             "draft": draftEmail,
-            "title": EmailTitle
+            "title": EmailTitle,
         }
         const getCookieValue = (name) => {
             const value = `; ${document.cookie}`;
@@ -89,11 +97,11 @@ export default function Dashboard(){
                         <label className="px-7 text-lg">Set a tone and word limit for your mail.</label>
                         <div className="moodSelector">
                             <textarea name='emailContext' className="h-[50px] w-[350px] bg-[#ececec] rounded-s-2xl resize-none" placeholder="Formal, Casual, etc"></textarea>
-                            <select className=' bg-[#ececec] border border-l-gray-400 px-1'> 
-                                <option>100 words</option>
-                                <option>200 words</option>
-                                <option>500 words</option>
-                                <option>1000 words</option>
+                            <select name='wordLimit' className=' bg-[#ececec] border border-l-gray-400 px-1'> 
+                                <option value="100">100 words</option>
+                                <option value="200">200 words</option>
+                                <option value="500">500 words</option>
+                                <option value="1000">1000 words</option>
                             </select>
                             <button className=" rounded-e-2xl bg-[#4052f2] w-[150px] text-white cursor-pointer" type="submit">Generate</button>
                         </div>
@@ -103,7 +111,7 @@ export default function Dashboard(){
                         <textarea name='paraphrasedEmail' placeholder='Dear abcdefg.........' className='paraphrasedEmail resize-none h-[350px] w-full' required></textarea>
                         <div className='flex gap-8 items-center justify-center pt-7'> 
                             <button onClick={draftAdditionHandler} className="h-[50px] w-[150px] bg-[#ececec] rounded-2xl resize-none" type='button'>Save to drafts</button>
-                            <button className=" rounded-2xl bg-[#4052f2] h-[50px] w-[150px] text-white cursor-pointer" type="button">Send email</button>
+                            <button className=" rounded-2xl bg-[#4052f2] h-[50px] w-[150px] text-white cursor-pointer" type="button" onClick={sendEmailHandler}>Send email</button>
                         </div>
                     </form>
                 </div>
@@ -123,6 +131,12 @@ export default function Dashboard(){
                 <h1 className=' text-2xl font-semibold'>Dashboard cannot be accessed without logging in.</h1>
                 <Link href='/pages/Login' className='bg-blue-700 px-20 py-4 text-xl text-white rounded-2xl mt-4' >Log in</Link>
             </div>
+        }
+
+        {
+            sendEmailActive && <>
+                <SendEmail />
+            </>
         }
         </>
     );

@@ -48,19 +48,10 @@ export default function Navbar(){
                 loggedIn && 
                 <ul className="flex items-center gap-6">
                     <Link href="/pages/Dashboard" className="text-xl cursor-pointer">Dashboard</Link>
-                    {/* <ScrollLink to="paraphraserSection" smooth={true} duration={400}>
-                        <div>
-                            <Link href="/pages/Dashboard" className="text-xl cursor-pointer" >Paraphraser</Link>
-                        </div>
-                    </ScrollLink>
-                    <ScrollLink to="draftsSection" smooth={true} duration={400}>
-                        <div>
-                            <Link href="/pages/Dashboard" className="text-xl cursor-pointer" >Drafts</Link>
-                        </div>   
-                    </ScrollLink> */}
                     <div className="relative">
                         <p className="accountButton ">Account</p>
                         <div className="accountMenu">
+                            <p className="py-2 font-bold text-xl hover:text-blue-700 cursor-pointer">Arnav Jain</p>
                             <p className=" py-2 cursor-pointer hover:text-blue-700">Open Account</p>
                             <p className=" py-2 cursor-pointer hover:text-blue-700">Logout</p>
                         </div>
