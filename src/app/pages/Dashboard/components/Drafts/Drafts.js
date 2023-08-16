@@ -35,7 +35,7 @@ export default function Drafts(){
     const authcookie = getCookieValue('Authorization');
     console.log(decodeURIComponent(authcookie))
     
-    axios.post('http://localhost:4000/fetchDraft', {
+    axios.get('http://localhost:4000/seemail', {
         headers: {
         'x-api-key': "54321a",
         'Authorization': decodeURIComponent(authcookie)
