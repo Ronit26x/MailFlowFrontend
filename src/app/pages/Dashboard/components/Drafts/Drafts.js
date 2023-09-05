@@ -5,7 +5,7 @@ const axios = require('axios');
 
 export default function Drafts(){
 
-    const drafts = [
+    let allDrafts = [
         // {
         //     title: "title1",
         //     creationDate: new Date().getFullYear(),
@@ -27,22 +27,27 @@ export default function Drafts(){
         //     creationDate: new Date().getFullYear(),
         // },
     ]
+
     const getCookieValue = (name) => {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     };    
     const authcookie = getCookieValue('Authorization');
-    console.log(decodeURIComponent(authcookie))
     
-    axios.post('http://localhost:4000/fetchDraft', {
+    axios.get('http://localhost:4000/seemail', {
         headers: {
         'x-api-key': "54321a",
         'Authorization': decodeURIComponent(authcookie)
       }
     })
     .then(response => {          
-        console.log(response)
+        
+        allDrafts = response.data.map(draft => {
+            title: draft.draftTitle
+        })
+        console.log(allDrafts)
+        
     })
     .catch(error => {
         console.log(error)
@@ -52,13 +57,17 @@ export default function Drafts(){
         <>
             <div className='grid grid-flow-row row-span-5 w-[350px] gap-6 pt-8'>
                 {
-                    drafts.map(draft => {
-                        return(
-                            <div key={draft.title} className='draftPreviewShadow rounded-lg flex items-center justify-between cursor-pointer bg-[#ececec] h-[50px] px-4'>
-                                <h1 className=" text-xl font-semibold">{draft.title}</h1>
-                                <p>{draft.creationDate}</p>
-                            </div>
-                        )
+                    allDrafts.map(drafts => {
+                        drafts.map(draft =>{
+                            console.log(draft)
+                            return(
+                                <div key={draft.draftTitle} className='draftPreviewShadow rounded-lg flex items-center justify-between cursor-pointer bg-[#ececec] h-[50px] px-4'>
+                                    <h1 className=" text-xl font-semibold">{draft.draftTitle}</h1>
+                                    <p>{draft.draftBody}</p>
+                                    {/* <p>{draft.creationDate}</p> */}
+                                </div>
+                            )
+                        })
                     })
                 }
             </div>
