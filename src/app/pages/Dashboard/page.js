@@ -10,7 +10,7 @@ import Drafts from './components/Drafts/Drafts';
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
-import SendEmail from './components/sendEmail/SendEmail';
+import SendEmailDialog from './components/sendEmail/SendEmailDialog';
 
 const axios = require('axios');
 
@@ -33,8 +33,20 @@ export default function Dashboard(){
     const [sendEmailActive, setSendEmailActive] = useState(false);
     const sendEmailHandler = () =>{
         setSendEmailActive(true);
-        sendEmailActive?document.body.style.overflow="hidden" : document.body.style.overflow="auto"
+        document.body.classList.add('disable-scroll');
+        // sendEmailActive?document.body.style.overflow="hidden" : document.body.style.overflow="auto"
     }
+    const closeSendDialog = () =>{
+        setSendEmailActive(false)
+        document.body.classList.remove('disable-scroll');
+    }
+
+    useEffect(() => {
+        return () => {
+          // Cleanup function to remove the CSS class when the component unmounts
+          document.body.classList.remove('disable-scroll');
+        };
+      }, []);
 
     const form = document.querySelector('.promptForm');
     const finalEmail = document.querySelector('.paraphrasedEmail')
@@ -108,7 +120,7 @@ export default function Dashboard(){
                     </form>
                     <form className="containerShadow paraphrasedEmailContainer w-[550px] h-[500px]  rounded-3xl">
                         <textarea name='EmailTitle' placeholder='Paraphrased email (Click to change title)' className="paraphrasedEmailTitle w-full h-[50px] rounded-t-3xl bg-[#ececec] flex items-center px-4 text-xl font-semibold resize-none" required></textarea>
-                        <textarea name='paraphrasedEmail' placeholder='Dear abcdefg.........' className='paraphrasedEmail resize-none h-[350px] w-full' required></textarea>
+                        <textarea disabled name='paraphrasedEmail' placeholder='Dear abcdefg.........' className='paraphrasedEmail resize-none h-[350px] w-full' required></textarea>
                         <div className='flex gap-8 items-center justify-center pt-7'> 
                             <button onClick={draftAdditionHandler} className="h-[50px] w-[150px] bg-[#ececec] rounded-2xl resize-none" type='button'>Save to drafts</button>
                             <button className=" rounded-2xl bg-[#4052f2] h-[50px] w-[150px] text-white cursor-pointer" type="button" onClick={sendEmailHandler}>Send email</button>
@@ -123,7 +135,7 @@ export default function Dashboard(){
                     <Lottie animationData={DraftsAnimation} className=' h-[500px] w-[1000px]'></Lottie>
                 </div>   
             </section>
-        </main>
+        </main> 
         }
 
         {
@@ -135,7 +147,7 @@ export default function Dashboard(){
 
         {
             sendEmailActive && <>
-                <SendEmail />
+                <SendEmailDialog onClose={closeSendDialog} />
             </>
         }
         </>
