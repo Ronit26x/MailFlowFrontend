@@ -76,7 +76,7 @@ export default function Drafts(isDraftSaved, setIsDraftSaved) {
                                     <label className='text-2xl font-bold'>Subject :</label>
                                     <p className='text-2xl font-bold'>&nbsp;{selectedDraft.draftTitle}</p>
                                 </div>
-                                <button className='bg-[#ececec] px-4 py-2 w-[150px] rounded-2xl' onClick={()=>{setSelectedDraft(null)}}>Close</button>
+                                <button className='bg-[#ececec] px-4 py-2 w-[150px] rounded-2xl hover:text-white hover:bg-blue-700 hover:rounded-3xl' onClick={()=>{setSelectedDraft(null)}}>Close</button>
                             </div>
                             <p className='mt-4'>{selectedDraft.draftBody}</p>
                         </div>
