@@ -4,7 +4,6 @@ import './dashboard.css'
 
 import Lottie from "lottie-react";
 import EmailSendAnimation from "./assets/animation_lk1ht47q.json"
-import DraftsAnimation from "./assets/animation_lk30q3yq.json"
 import Drafts from './components/Drafts/Drafts';
 
 import { useState, useEffect } from 'react';
@@ -64,33 +63,41 @@ export default function Dashboard(){
         })
     }
 
+    const [isDraftSaved, setIsDraftSaved] = useState(false);
     const draftAdditionHandler = (req,res) =>{
-        const draftEmail = finalEmail.innerHTML;
-        const EmailTitle = document.querySelector('.paraphrasedEmailTitle').value;
- 
+        const draftEmailBody = finalEmail.innerHTML;
+        const draftEmailTitle = document.querySelector('.paraphrasedEmailTitle').value;
+
         const draft = {
-            "draft": draftEmail,
-            "title": EmailTitle,
+            "draft": draftEmailBody,
+            "title": draftEmailTitle,
         }
         const getCookieValue = (name) => {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         };
-        
-        console.log(draft);
         const authcookie = getCookieValue('Authorization');
-        axios.post('http://localhost:4000/saveDraft', draft, {
+
+        if(draftEmailBody && draftEmailTitle){
+            axios.post('http://localhost:4000/saveDraft', draft, {
                 headers: {
                   'x-api-key': "54321a",
                   'Authorization': decodeURIComponent(authcookie),
                 }
-        })
-        .then(response => {
-            console.log("save draft triggered")
-        })
+            })
+            .then(response => {
+                setIsDraftSaved(true)
+                console.log("save draft triggered")
+            })
+            .catch((error) => {
+                console.log('Error saving draft:', error);
+              });
+        }
+        else
+            console.log("save draft error because either field is missing")
     }
-
+    
     return(
         <>
         {
@@ -131,8 +138,7 @@ export default function Dashboard(){
             <section className='draftsSection pt-16 min-h-[100vh] pb-8' id='draftsSection'>
                 <h1 className='text-5xl font-bold'>Your Drafts</h1>
                 <div className='flex items-center justify-between'>
-                    <Drafts />
-                    <Lottie animationData={DraftsAnimation} className=' h-[500px] w-[1000px]'></Lottie>
+                    <Drafts isDraftSaved={isDraftSaved} setIsDraftSaved={setIsDraftSaved} />   
                 </div>   
             </section>
         </main> 
