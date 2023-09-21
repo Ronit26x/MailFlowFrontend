@@ -53,6 +53,7 @@ export default function Dashboard(){
         event.preventDefault();
         const formData = new FormData(form);
         const promptData = Object.fromEntries(formData);
+        console.log(promptData)
         axios.post('http://localhost:4000/genemail', promptData, {
                 headers: {
                   'x-api-key': "54321a"
@@ -94,8 +95,6 @@ export default function Dashboard(){
                 console.log('Error saving draft:', error);
               });
         }
-        else
-            console.log("save draft error because either field is missing")
     }
     
     return(
@@ -116,7 +115,7 @@ export default function Dashboard(){
                         <label className="px-7 text-lg">Set a tone and word limit for your mail.</label>
                         <div className="moodSelector">
                             <textarea name='emailContext' className="h-[50px] w-[350px] bg-[#ececec] rounded-s-2xl resize-none" placeholder="Formal, Casual, etc"></textarea>
-                            <select name='wordLimit' className=' bg-[#ececec] border border-l-gray-400 px-1'> 
+                            <select name='mailLength' className=' bg-[#ececec] border border-l-gray-400 px-1'> 
                                 <option value="100">100 words</option>
                                 <option value="200">200 words</option>
                                 <option value="500">500 words</option>

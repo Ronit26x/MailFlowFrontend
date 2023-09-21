@@ -42,7 +42,7 @@ export default function Drafts(isDraftSaved, setIsDraftSaved) {
         fetchDrafts();
     },[isDraftSaved]);
   
-    const filteredDrafts = allDrafts.slice(1,6);  
+    const filteredDrafts = allDrafts.slice(0,5);  
 
     const handleDraftSelection = (draft) =>{
       if(selectedDraft==draft)
@@ -59,7 +59,7 @@ export default function Drafts(isDraftSaved, setIsDraftSaved) {
                     <div
                         key={index}
                         onClick={()=>{handleDraftSelection(draft)}}
-                        className={`draftPreviewShadow rounded-2xl flex items-center justify-between cursor-pointer  ${selectedDraft === draft ? 'bg-blue-700' : 'bg-[#fff]'} h-[60px] px-6`}
+                        className={`draftPreviewShadow rounded-2xl flex items-center justify-between cursor-pointer hover:rounded-full  ${selectedDraft === draft ? 'bg-blue-700 rounded-full' : 'bg-[#fff]'} h-[60px] px-6`}
                     >
                         <h1 className={`text-xl font-semibold ${selectedDraft === draft ? 'text-white' : 'text-black'}`}>{draft.draftTitle}</h1>
                     </div>
