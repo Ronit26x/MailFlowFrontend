@@ -47,8 +47,9 @@ export default function Drafts(isDraftSaved, setIsDraftSaved) {
     const handleDraftSelection = (draft) =>{
       if(selectedDraft==draft)
           setSelectedDraft(null)
-      else
-          setSelectedDraft(draft);
+      else{
+        setSelectedDraft(draft);
+      }
     }
   
     return (
@@ -78,7 +79,11 @@ export default function Drafts(isDraftSaved, setIsDraftSaved) {
                                 </div>
                                 <button className='bg-[#ececec] px-4 py-2 w-[150px] rounded-2xl hover:rounded-3xl' onClick={()=>{setSelectedDraft(null)}}>Close</button>
                             </div>
-                            <p className='mt-4'>{selectedDraft.draftBody}</p>
+                            <textarea value={selectedDraft.draftBody} className='mt-4 resize-none h-[40vh] w-[61vw]'></textarea>
+                            <div className='flex items-center justify-center gap-16'>
+                                <button className='bg-[#ececec] px-4 py-2 w-[150px] rounded-2xl hover:rounded-3xl'>Save Draft</button>
+                                <button className='bg-[#4052f2] px-4 py-2 w-[150px] text-white rounded-2xl hover:rounded-3xl'>Send Email</button>
+                            </div>
                         </div>
                     ) : (
                         <Lottie animationData={DraftsAnimation} className=' h-[500px] w-[1000px]'></Lottie>

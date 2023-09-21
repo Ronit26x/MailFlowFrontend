@@ -5,6 +5,7 @@ import './dashboard.css'
 import Lottie from "lottie-react";
 import EmailSendAnimation from "./assets/animation_lk1ht47q.json"
 import Drafts from './components/Drafts/Drafts';
+import { BsClipboardPlus, BsClipboardCheckFill } from 'react-icons/bs';
 
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
@@ -53,7 +54,6 @@ export default function Dashboard(){
         event.preventDefault();
         const formData = new FormData(form);
         const promptData = Object.fromEntries(formData);
-        console.log(promptData)
         axios.post('http://localhost:4000/genemail', promptData, {
                 headers: {
                   'x-api-key': "54321a"
@@ -61,6 +61,7 @@ export default function Dashboard(){
         })
         .then(response => {
             finalEmail.innerHTML = response.data;
+            setIsCopyToClipboardSelected(false);
         })
     }
 
@@ -96,6 +97,21 @@ export default function Dashboard(){
               });
         }
     }
+
+    const [copyStatus, setCopyStatus] = useState('');
+    const [isCopyToClipboardSelected, setIsCopyToClipboardSelected] = useState(false);
+    const copyToClipboard = (textToCopy) => {
+        navigator.clipboard.writeText(textToCopy)
+          .then(() => {
+            setCopyStatus('Copied to clipboard');
+            console.log("function called")
+          })
+          .catch((error) => {
+            setCopyStatus('Copy failed');
+            console.error('Error copying to clipboard:', error);
+          });
+      };
+      
     
     return(
         <>
@@ -114,7 +130,7 @@ export default function Dashboard(){
                         <textarea name='emailContent' className="paraphraseInput" type="text" placeholder="Go ahead, give me a prompt."></textarea>
                         <label className="px-7 text-lg">Set a tone and word limit for your mail.</label>
                         <div className="moodSelector">
-                            <textarea name='emailContext' className="h-[50px] w-[350px] bg-[#ececec] rounded-s-2xl resize-none" placeholder="Formal, Casual, etc"></textarea>
+                            <textarea name='emailContext' className="h-[50px] w-[350px] pr-8 bg-[#ececec] rounded-s-2xl resize-none" placeholder="Formal, Casual, etc"></textarea>
                             <select name='mailLength' className=' bg-[#ececec] border border-l-gray-400 px-1'> 
                                 <option value="100">100 words</option>
                                 <option value="200">200 words</option>
@@ -126,7 +142,15 @@ export default function Dashboard(){
                     </form>
                     <form className="containerShadow paraphrasedEmailContainer w-[550px] h-[500px]  rounded-3xl">
                         <textarea name='EmailTitle' placeholder='Paraphrased email (Click to change title)' className="paraphrasedEmailTitle w-full h-[50px] rounded-t-3xl bg-[#ececec] flex items-center px-4 text-xl font-semibold resize-none" required></textarea>
-                        <textarea disabled name='paraphrasedEmail' placeholder='Dear abcdefg.........' className='paraphrasedEmail resize-none h-[350px] w-full' required></textarea>
+                        <div className='flex relative'>
+                            <textarea disabled name='paraphrasedEmail' placeholder='Dear abcdefg.........' className='paraphrasedEmail resize-none h-[350px] w-full' required></textarea>
+                            <span onClick={ () => {setIsCopyToClipboardSelected(true); copyToClipboard(finalEmail.innerHTML)}}>
+                                {
+                                    isCopyToClipboardSelected && copyStatus ? <BsClipboardCheckFill className='cursor-pointer h-[30px] w-[20px] absolute top-4 right-6' /> : <BsClipboardPlus className='cursor-pointer h-[30px] w-[20px] absolute top-4 right-6'/>
+                                }
+                            </span>
+                            
+                        </div>
                         <div className='flex gap-8 items-center justify-center pt-7'> 
                             <button onClick={draftAdditionHandler} className="h-[50px] w-[150px] bg-[#ececec] rounded-2xl resize-none" type='button'>Save to drafts</button>
                             <button className=" rounded-2xl bg-[#4052f2] h-[50px] w-[150px] text-white cursor-pointer" type="button" onClick={sendEmailHandler}>Send email</button>
