@@ -30,7 +30,7 @@ export default function Drafts(isDraftSaved, setIsDraftSaved) {
             .then((response) => {
               const draftsData = response.data.map((draft) => ({
                 draftTitle: draft.draftTitle,
-                draftBody: draft.draftBody, // Make sure this property matches your API response
+                draftBody: draft.draftBody,
               }));
               setAllDrafts(draftsData);
             })
@@ -81,7 +81,8 @@ export default function Drafts(isDraftSaved, setIsDraftSaved) {
                             </div>
                             <textarea value={selectedDraft.draftBody} className='mt-4 resize-none h-[40vh] w-[61vw]'></textarea>
                             <div className='flex items-center justify-center gap-16'>
-                                <button className='bg-[#ececec] px-4 py-2 w-[150px] rounded-2xl hover:rounded-3xl'>Save Draft</button>
+                                <button className='bg-[#ececec] px-4 py-2 w-[150px] rounded-2xl hover:rounded-3xl'>Edit Draft</button>
+                                <button className='bg-[#ececec] px-4 py-2 w-[150px] rounded-2xl hover:rounded-3xl'>Delete Draft</button>
                                 <button className='bg-[#4052f2] px-4 py-2 w-[150px] text-white rounded-2xl hover:rounded-3xl'>Send Email</button>
                             </div>
                         </div>
