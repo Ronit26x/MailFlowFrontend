@@ -29,7 +29,8 @@ export default function Login(){
 
         const formData = new FormData(form);
         const data = Object.fromEntries(formData);
-        const loginDetails = JSON.stringify(data);
+        const loginEmail = data.loginEmail;
+        console.log(loginEmail)
 
         axios.post('http://localhost:4000/signin', data, {
             headers: {

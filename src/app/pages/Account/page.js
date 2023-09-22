@@ -1,14 +1,27 @@
 "use client"
 
 import Lottie from "lottie-react";
+import { useState, useEffect } from "react";
+import Cookies from "js-cookie";
+import Link from "next/link";
 
-
-import accountHelloAnimation from './assets/animation_lk9srpas.json'
+import accountHelloAnimation from './assets/animation_lk9srpas.json';
+import loginAnimation from 'src/assets/animation_lmu618a3.json';
 
 export default function Account(){
+
+    const [loggedIn, setLoggedIn] = useState('false')
+    useEffect(()=>{
+        setInterval(()=>{
+            const isLoggedIn = Cookies.get('isLoggedIn');
+            setLoggedIn(isLoggedIn)  
+        }, 1000) 
+    }, [])
+
     return(
         <div>
-            <section className="min-h-[90vh] py-4 px-16">
+            {
+                loggedIn ? (<section className="min-h-[90vh] py-4 px-16">
                 <div className="flex items-center gap-8">
                     <h1 className="text-6xl font-bold">Hello, Arnav Jain</h1>
                     <Lottie animationData={accountHelloAnimation} className="h-[20vh]"/>
@@ -23,6 +36,14 @@ export default function Account(){
                     </div>
                 </div>
             </section>
+            ) : ( 
+            <div className='h-[90vh] flex flex-col items-center justify-center'>
+                <Lottie animationData={loginAnimation} className="h-[50vh] -mt-16" />
+                <h1 className=' text-2xl font-semibold -mt-16'>Log in to view your account details.</h1>
+                <Link href='/pages/Login' className='bg-blue-700 px-20 py-4 text-xl text-white rounded-2xl mt-4' >Log in</Link>
+            </div>
+            )
+            }
         </div>
     );
 }

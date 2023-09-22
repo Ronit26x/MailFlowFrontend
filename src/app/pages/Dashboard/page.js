@@ -6,6 +6,7 @@ import Lottie from "lottie-react";
 import EmailSendAnimation from "./assets/animation_lk1ht47q.json"
 import Drafts from './components/Drafts/Drafts';
 import { BsClipboardPlus, BsClipboardCheckFill } from 'react-icons/bs';
+import loginAnimation from 'src/assets/animation_lmu618a3.json';
 
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
@@ -110,7 +111,7 @@ export default function Dashboard(){
             setCopyStatus('Copy failed');
             console.error('Error copying to clipboard:', error);
           });
-      };
+    };
       
     
     return(
@@ -169,7 +170,8 @@ export default function Dashboard(){
 
         {
             !loggedIn && <div className='h-[90vh] flex flex-col items-center justify-center'>
-                <h1 className=' text-2xl font-semibold'>Dashboard cannot be accessed without logging in.</h1>
+                <Lottie animationData={loginAnimation} className='h-[50vh] -mt-16' />
+                <h1 className=' text-2xl font-semibold -mt-16'>Dashboard cannot be accessed without logging in.</h1>
                 <Link href='/pages/Login' className='bg-blue-700 px-20 py-4 text-xl text-white rounded-2xl mt-4' >Log in</Link>
             </div>
         }
