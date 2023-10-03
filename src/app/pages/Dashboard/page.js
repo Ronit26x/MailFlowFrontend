@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 import SendEmailDialog from './components/sendEmail/SendEmailDialog';
+import ErrorDialog from '@/app/components/Error/ErrorDialog';
 
 const axios = require('axios');
 
@@ -30,6 +31,14 @@ export default function Dashboard(){
             setLoggedIn(isLoggedIn)  
         }, 1000) 
     }, [])
+
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showErrorDialog, setShowErrorDialog] = useState(false)
+    const removeErrorDialog = () =>{
+        setTimeout(() => {
+            setShowErrorDialog(false);
+        }, 5000);
+    }
 
     const [sendEmailActive, setSendEmailActive] = useState(false);
     const sendEmailHandler = () =>{
@@ -64,6 +73,12 @@ export default function Dashboard(){
             finalEmail.innerHTML = response.data;
             setIsCopyToClipboardSelected(false);
         })
+        .catch((error) => {
+            console.log('Error saving draft:', error);
+            setErrorMessage('Server Error! Please try again in a while.');
+            setShowErrorDialog(true);
+            removeErrorDialog();
+          });
     }
 
     const [isDraftSaved, setIsDraftSaved] = useState(false);
@@ -95,10 +110,17 @@ export default function Dashboard(){
             })
             .catch((error) => {
                 console.log('Error saving draft:', error);
+                setErrorMessage('Server Error! Please try again in a while.');
+                setShowErrorDialog(true);
+                removeErrorDialog();
               });
         }
-        else{
-            alert("Add title or body");
+        else if(!draftEmailBody || !draftEmailTitle){
+            // alert("Add title or body");
+            setErrorMessage('Title or email body missing in the draft');
+            setShowErrorDialog(true);
+            removeErrorDialog();
+            console.log("error to hai boss")
         }
     }
 
@@ -119,6 +141,12 @@ export default function Dashboard(){
     
     return(
         <>
+        {
+            showErrorDialog && (
+                <ErrorDialog message={errorMessage} />
+            )
+        }
+
         {
             loggedIn && <main className="min-h-[90vh] px-16">
             <section className='paraphraserSection' id='paraphraserSection'>
@@ -147,7 +175,7 @@ export default function Dashboard(){
                     <form className="containerShadow paraphrasedEmailContainer w-[550px] h-[500px]  rounded-3xl">
                         <textarea name='EmailTitle' placeholder='Paraphrased email (Click to change title)' className="paraphrasedEmailTitle w-full h-[50px] rounded-t-3xl bg-[#ececec] flex items-center px-4 text-xl font-semibold resize-none" required></textarea>
                         <div className='flex relative'>
-                            <textarea disabled name='paraphrasedEmail' placeholder='Dear abcdefg.........' className='paraphrasedEmail resize-none h-[350px] w-full' required></textarea>
+                            <textarea name='paraphrasedEmail' placeholder='Dear abcdefg.........' className='paraphrasedEmail resize-none h-[350px] w-full' required></textarea>
                             <span onClick={ () => {setIsCopyToClipboardSelected(true); copyToClipboard(finalEmail.innerHTML)}}>
                                 {
                                     isCopyToClipboardSelected && copyStatus ? <BsClipboardCheckFill className='cursor-pointer h-[30px] w-[20px] absolute top-4 right-6' /> : <BsClipboardPlus className='cursor-pointer h-[30px] w-[20px] absolute top-4 right-6'/>
