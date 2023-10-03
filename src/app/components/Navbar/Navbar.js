@@ -27,14 +27,22 @@ export default function Navbar(){
     useEffect(()=>{
         const accountButton = document.querySelector('.accountButton');
         const accountMenu = document.querySelector('.accountMenu');
-        accountButton.addEventListener('click', ()=>{
-            accountMenu.classList.toggle('accountMenu-active')
-            accountButton.classList.toggle('accountButton-active')
-        })
+
+        console.log(accountButton + " " + accountMenu)
+        if(loggedIn)
+            accountButton.addEventListener('click', ()=>{
+                console.log("clicked")
+                accountButton.classList.toggle('accountButton-active')
+                accountMenu.classList.toggle('accountMenu-active')
+            })
     }, [])
 
+
+
     const logoutHandler = () => {
-        console.log("logout function called")
+        Cookies.remove('isLoggedIn');
+        Cookies.remove('Authorization');
+        setLoggedIn(false)
     }
     return(
         <div className="h-[10vh] fixed top-0 left-0 flex items-center justify-between w-full px-16 border-b border-[] z-10 bg-white">

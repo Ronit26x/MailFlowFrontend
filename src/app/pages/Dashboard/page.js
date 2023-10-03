@@ -97,6 +97,9 @@ export default function Dashboard(){
                 console.log('Error saving draft:', error);
               });
         }
+        else{
+            alert("Add title or body");
+        }
     }
 
     const [copyStatus, setCopyStatus] = useState('');
@@ -176,11 +179,11 @@ export default function Dashboard(){
             </div>
         }
 
-        {
+        {/* {
             sendEmailActive && <>
                 <SendEmailDialog onClose={closeSendDialog} />
             </>
-        }
+        } */}
         </>
     );
 }

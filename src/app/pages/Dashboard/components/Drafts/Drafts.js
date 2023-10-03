@@ -51,6 +51,31 @@ export default function Drafts(isDraftSaved, setIsDraftSaved) {
         setSelectedDraft(draft);
       }
     }
+
+    const [isEditingDraft, setIsEditingDraft] = useState(false);
+    const [editedDraftBody, setEditedDraftBody] = useState(selectedDraft);
+    const draftEditHandler = (selectedDraft) => {
+        if(isEditingDraft){
+            // console.log(editedDraftBody)
+            selectedDraft.draftBody = editedDraftBody;
+
+            if(editedDraftBody)
+                setIsEditingDraft(false)
+        }
+        else{
+            // setEditedDraftBody(selectedDraft.draftBody);
+            setIsEditingDraft(true);
+        }
+    }
+
+    const saveEditedDraft = (selectedDraft) => {
+        console.log("save edited draft function called")
+        console.log(editedDraftBody)
+        setIsEditingDraft(false)
+        fetchDrafts();
+    }
+
+    const [isEditingOrSaving, SetIsEditingOrSaving] = useState(true)
   
     return (
         <div className='flex h-[70vh] min-h-fit gap-8'>
@@ -77,11 +102,33 @@ export default function Drafts(isDraftSaved, setIsDraftSaved) {
                                     <label className='text-2xl font-bold'>Subject :</label>
                                     <p className='text-2xl font-bold'>&nbsp;{selectedDraft.draftTitle}</p>
                                 </div>
-                                <button className='bg-[#ececec] px-4 py-2 w-[150px] rounded-2xl hover:rounded-3xl' onClick={()=>{setSelectedDraft(null)}}>Close</button>
+                                <button className='bg-[#ececec] px-4 py-2 w-[150px] rounded-2xl hover:rounded-3xl' onClick={()=>{setSelectedDraft(null); setIsEditingDraft(false)}}>Close</button>
                             </div>
-                            <textarea value={selectedDraft.draftBody} className='mt-4 resize-none h-[40vh] w-[61vw]'></textarea>
-                            <div className='flex items-center justify-center gap-16'>
-                                <button className='bg-[#ececec] px-4 py-2 w-[150px] rounded-2xl hover:rounded-3xl'>Edit Draft</button>
+
+                            {
+                                isEditingDraft ? (
+                                    <textarea onChange={(e) => setEditedDraftBody(e.target.value)} className='mt-4 resize-none h-[40vh] w-[61vw]'>{selectedDraft.draftBody}</textarea>
+                                ) : (
+                                    <textarea value={selectedDraft.draftBody} className='mt-4 resize-none h-[40vh] w-[61vw]'></textarea>
+                                )
+                            }
+
+                            
+                            <div className='flex items-center justify-end mt-4 gap-16'>
+                                <div onClick={() => { isEditingOrSaving ? SetIsEditingOrSaving(false) : SetIsEditingOrSaving(true) }}>
+                                    {
+                                        isEditingOrSaving ? (
+                                            <button onClick={()=>{draftEditHandler(selectedDraft)}} className='bg-[#ececec] px-4 py-2 w-[150px] rounded-2xl hover:rounded-3xl'>Edit Draft</button>
+                                        ) : (
+                                            <button onClick={()=>{saveEditedDraft(selectedDraft)}} className='bg-[#ececec] px-4 py-2 w-[150px] rounded-2xl hover:rounded-3xl'>Save Draft</button>
+                                        )
+                                    }
+                                </div>
+                                {/* <button onClick={()=>{draftEditHandler(selectedDraft)}} className='bg-[#ececec] px-4 py-2 w-[150px] rounded-2xl hover:rounded-3xl'>
+                                    {
+                                        isEditingDraft ? 'Save Draft' : 'Edit Draft'
+                                    }
+                                </button> */}
                                 <button className='bg-[#ececec] px-4 py-2 w-[150px] rounded-2xl hover:rounded-3xl'>Delete Draft</button>
                                 <button className='bg-[#4052f2] px-4 py-2 w-[150px] text-white rounded-2xl hover:rounded-3xl'>Send Email</button>
                             </div>
