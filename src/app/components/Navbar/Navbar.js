@@ -10,7 +10,7 @@ import './Navbar.css'
 
 export default function Navbar(){
 
-    const [_document, set_document] = useState(null);
+    const [_document, set_document] = useState();
     useEffect(() => {
         set_document(document)
     }, [])

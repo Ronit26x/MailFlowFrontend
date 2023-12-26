@@ -18,13 +18,24 @@ const axios = require('axios');
 
 
 export default function Dashboard(){
+    const [loggedIn, setLoggedIn] = useState('false')
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showErrorDialog, setShowErrorDialog] = useState(false)
+    const [sendEmailActive, setSendEmailActive] = useState(false);
+    const form = document.querySelector('.promptForm');
+    const finalEmail = document.querySelector('.paraphrasedEmail')
+    const [isDraftSaved, setIsDraftSaved] = useState(false);
+    const [copyStatus, setCopyStatus] = useState('');
+    const [isCopyToClipboardSelected, setIsCopyToClipboardSelected] = useState(false);
+
+    const isClient = typeof window !== 'undefined';
 
     const [_document, set_document] = useState(null);
     useEffect(() => {
         set_document(document)
     }, [])
     
-    const [loggedIn, setLoggedIn] = useState('false')
+    
     useEffect(()=>{
         setInterval(()=>{
             const isLoggedIn = Cookies.get('isLoggedIn');
@@ -32,15 +43,13 @@ export default function Dashboard(){
         }, 1000) 
     }, [])
 
-    const [errorMessage, setErrorMessage] = useState('');
-    const [showErrorDialog, setShowErrorDialog] = useState(false)
+    
     const removeErrorDialog = () =>{
         setTimeout(() => {
             setShowErrorDialog(false);
         }, 5000);
     }
 
-    const [sendEmailActive, setSendEmailActive] = useState(false);
     const sendEmailHandler = () =>{
         setSendEmailActive(true);
         document.body.classList.add('disable-scroll');
@@ -58,30 +67,33 @@ export default function Dashboard(){
         };
       }, []);
 
-    const form = document.querySelector('.promptForm');
-    const finalEmail = document.querySelector('.paraphrasedEmail')
+    
     const promptGenerateHandler = (event) =>{
         event.preventDefault();
-        const formData = new FormData(form);
-        const promptData = Object.fromEntries(formData);
-        axios.post('http://localhost:4000/genemail', promptData, {
-                headers: {
-                  'x-api-key': "54321a"
-               }
-        })
-        .then(response => {
-            finalEmail.innerHTML = response.data;
-            setIsCopyToClipboardSelected(false);
-        })
-        .catch((error) => {
-            console.log('Error saving draft:', error);
-            setErrorMessage('Server Error! Please try again in a while.');
-            setShowErrorDialog(true);
-            removeErrorDialog();
-          });
+
+        if(isClient){
+            const formData = new FormData(form);
+            const promptData = Object.fromEntries(formData);
+            axios.post('http://localhost:4000/genemail', promptData, {
+                    headers: {
+                      'x-api-key': "54321a"
+                   }
+            })
+            .then(response => {
+                finalEmail.innerHTML = response.data;
+                setIsCopyToClipboardSelected(false);
+            })
+            .catch((error) => {
+                console.log('Error saving draft:', error);
+                setErrorMessage('Server Error! Please try again in a while.');
+                setShowErrorDialog(true);
+                removeErrorDialog();
+              });
+        }
+        
     }
 
-    const [isDraftSaved, setIsDraftSaved] = useState(false);
+    
     const draftAdditionHandler = (req,res) =>{
         const draftEmailBody = finalEmail.innerHTML;
         const draftEmailTitle = document.querySelector('.paraphrasedEmailTitle').value;
@@ -124,8 +136,6 @@ export default function Dashboard(){
         }
     }
 
-    const [copyStatus, setCopyStatus] = useState('');
-    const [isCopyToClipboardSelected, setIsCopyToClipboardSelected] = useState(false);
     const copyToClipboard = (textToCopy) => {
         navigator.clipboard.writeText(textToCopy)
           .then(() => {
