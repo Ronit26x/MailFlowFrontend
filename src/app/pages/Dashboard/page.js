@@ -117,7 +117,7 @@ export default function Dashboard(){
                     headers: {
                       'x-api-key': "54321a",
                       'Authorization': decodeURIComponent(authcookie),
-                    }
+                    }
                 })
                 .then(response => {
                     setIsDraftSaved(true)
@@ -191,7 +191,7 @@ export default function Dashboard(){
                         <textarea name='EmailTitle' placeholder='Paraphrased email (Click to change title)' className="paraphrasedEmailTitle w-full h-[50px] rounded-t-3xl bg-[#ececec] flex items-center px-4 text-xl font-semibold resize-none" required></textarea>
                         <div className='flex relative'>
                             <textarea name='paraphrasedEmail' placeholder='Dear abcdefg.........' className='paraphrasedEmail resize-none h-[350px] w-full' required></textarea>
-                            <span onClick={ () => {setIsCopyToClipboardSelected(true); copyToClipboard(finalEmail.innerHTML)}}>
+                            <span onClick={ () => {setIsCopyToClipboardSelected(true); copyToClipboard(hello)}}>
                                 {
                                     isCopyToClipboardSelected && copyStatus ? <BsClipboardCheckFill className='cursor-pointer h-[30px] w-[20px] absolute top-4 right-6' /> : <BsClipboardPlus className='cursor-pointer h-[30px] w-[20px] absolute top-4 right-6'/>
                                 }
