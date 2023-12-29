@@ -12,7 +12,9 @@ export default function Signup(){
     const [confirmPassword, setConfirmPassword] = useState('');
     const [passwordsMatch, setPasswordsMatch] = useState(true);   
 
-    const form = document.querySelector('.signupForm');
+    const isClient = typeof window !== 'undefined';
+
+    
 
     const signupHandler = event =>{
         event.preventDefault();
@@ -21,11 +23,13 @@ export default function Signup(){
           setPasswordsMatch(true);
         else 
           setPasswordsMatch(false);
-        
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-        const signupDetails = JSON.stringify(data);
 
+        if(isClient){
+            const form = document.querySelector('.signupForm');
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+            const signupDetails = JSON.stringify(data);
+        }
         console.log(signupDetails)
     }
 
