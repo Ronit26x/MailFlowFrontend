@@ -41,8 +41,6 @@ export default function Dashboard(){
             const isLoggedIn = Cookies.get('isLoggedIn');
             setLoggedIn(isLoggedIn)  
         }, 1000) 
-
-        return () => clearInterval(intervalId);
     }, [])
 
     
@@ -98,46 +96,49 @@ export default function Dashboard(){
     }
 
     const draftAdditionHandler = (req,res) =>{
-        const finalEmail = document.querySelector('.paraphrasedEmail') 
-        const draftEmailBody = finalEmail.innerHTML;
-        const draftEmailTitle = document.querySelector('.paraphrasedEmailTitle').value;
-
-        const draft = {
-            "draft": draftEmailBody,
-            "title": draftEmailTitle,
-        }
-        const getCookieValue = (name) => {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        };
-        const authcookie = getCookieValue('Authorization');
-
-        if(draftEmailBody && draftEmailTitle){
-            axios.post('http://localhost:4000/saveDraft', draft, {
-                headers: {
-                  'x-api-key': "54321a",
-                  'Authorization': decodeURIComponent(authcookie),
-                }
-            })
-            .then(response => {
-                setIsDraftSaved(true)
-                console.log("save draft triggered")
-            })
-            .catch((error) => {
-                console.log('Error saving draft:', error);
-                setErrorMessage('Server Error! Please try again in a while.');
+        if(isClient){
+            const finalEmail = document.querySelector('.paraphrasedEmail') 
+            const draftEmailBody = finalEmail.innerHTML;
+            const draftEmailTitle = document.querySelector('.paraphrasedEmailTitle').value;
+    
+            const draft = {
+                "draft": draftEmailBody,
+                "title": draftEmailTitle,
+            }
+            const getCookieValue = (name) => {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+            };
+            const authcookie = getCookieValue('Authorization');
+    
+            if(draftEmailBody && draftEmailTitle){
+                axios.post('http://localhost:4000/saveDraft', draft, {
+                    headers: {
+                      'x-api-key': "54321a",
+                      'Authorization': decodeURIComponent(authcookie),
+                    }
+                })
+                .then(response => {
+                    setIsDraftSaved(true)
+                    console.log("save draft triggered")
+                })
+                .catch((error) => {
+                    console.log('Error saving draft:', error);
+                    setErrorMessage('Server Error! Please try again in a while.');
+                    setShowErrorDialog(true);
+                    removeErrorDialog();
+                  });
+            }
+            else if(!draftEmailBody || !draftEmailTitle){
+                // alert("Add title or body");
+                setErrorMessage('Title or email body missing in the draft');
                 setShowErrorDialog(true);
                 removeErrorDialog();
-              });
+                console.log("error to hai boss")
+            }
         }
-        else if(!draftEmailBody || !draftEmailTitle){
-            // alert("Add title or body");
-            setErrorMessage('Title or email body missing in the draft');
-            setShowErrorDialog(true);
-            removeErrorDialog();
-            console.log("error to hai boss")
-        }
+        
     }
 
     const copyToClipboard = (textToCopy) => {
@@ -199,7 +200,7 @@ export default function Dashboard(){
                         </div>
                         <div className='flex gap-8 items-center justify-center pt-7'> 
                             <button onClick={draftAdditionHandler} className="h-[50px] w-[150px] bg-[#ececec] rounded-2xl resize-none" type='button'>Save to drafts</button>
-                            <button className=" rounded-2xl bg-[#4052f2] h-[50px] w-[150px] text-white cursor-pointer" type="button" onClick={sendEmailHandler}>Send email</button>
+                            <button className=" rounded-2xl bg-[#4052f2] h-[50px] w-[150px] text-white cursor-pointer" type="button" >Send email</button>
                         </div>
                     </form>
                 </div>

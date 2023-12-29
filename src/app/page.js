@@ -7,11 +7,11 @@ import { useEffect, useState } from 'react';
 
 export default function Home() {
 
-  const [_document, set_document] = useState(null)
+  // const [_document, set_document] = useState(null)
 
-  useEffect(() => {
-    set_document(document)
-  }, [])
+  // useEffect(() => {
+  //   set_document(document)
+  // }, [])
 
   return (
     <main className="flex min-h-[90vh] flex-col">
