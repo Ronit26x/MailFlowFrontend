@@ -17,42 +17,44 @@ export default function Login(){
 
     const [loginError, setLoginError] = useState(false)
 
-    const [_document, set_document] = useState(null)
-    useEffect(() => {
-        set_document(document)
-    }, [])
+    // const [_document, set_document] = useState(null)
+    // useEffect(() => {
+    //     set_document(document)
+    // }, [])
 
-    const form = document.querySelector('.loginForm');
+    const isClient = typeof window !== 'undefined';
 
     const loginHandler = event =>{
         event.preventDefault()
-
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-        const loginEmail = data.loginEmail;
-
-        axios.post('http://localhost:4000/signin', data, {
-            headers: {
-            'x-api-key': "54321a",
-          }
-        })
-        .then(response => {
-            Cookies.set('Authorization', response.data.token, { expires: 1 });           
-            if(response.data.token && response.status == 200){
-                Cookies.set('isLoggedIn', true, {
-                    expires: 1,
-                    path: '/',
-                    // httpOnly: true, // Cookie cannot be accessed by client-side JavaScript
-                    // secure: true, // Cookie can only be sent over HTTPS (requires SSL/TLS)
-                    // sameSite: 'strict',
-                });
-                router.push('/pages/Dashboard')
-                setLoginError(false)
-            }
-        })
-        .catch(error => {
-            setLoginError(true)
-        });   
+        if(isClient){
+            const form = document.querySelector('.loginForm');
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+            const loginEmail = data.loginEmail;
+    
+            axios.post('http://localhost:4000/signin', data, {
+                headers: {
+                'x-api-key': "54321a",
+              }
+            })
+            .then(response => {
+                Cookies.set('Authorization', response.data.token, { expires: 1 });           
+                if(response.data.token && response.status == 200){
+                    Cookies.set('isLoggedIn', true, {
+                        expires: 1,
+                        path: '/',
+                        // httpOnly: true, // Cookie cannot be accessed by client-side JavaScript
+                        // secure: true, // Cookie can only be sent over HTTPS (requires SSL/TLS)
+                        // sameSite: 'strict',
+                    });
+                    router.push('/pages/Dashboard')
+                    setLoginError(false)
+                }
+            })
+            .catch(error => {
+                setLoginError(true)
+            });   
+        }  
     }
     return(
         <main className="w-full min-h-[90vh] flex items-center justify-center gap-16">

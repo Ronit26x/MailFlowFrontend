@@ -10,10 +10,12 @@ import './Navbar.css'
 
 export default function Navbar(){
 
-    const [_document, set_document] = useState();
-    useEffect(() => {
-        set_document(document)
-    }, [])
+    // const [_document, set_document] = useState();
+    // useEffect(() => {
+    //     set_document(document)
+    // }, [])
+
+    const isClient = typeof window !== 'undefined';
 
 
     const [loggedIn, setLoggedIn] = useState('false')
@@ -25,19 +27,19 @@ export default function Navbar(){
     }, [])
 
     useEffect(()=>{
-        const accountButton = document.querySelector('.accountButton');
-        const accountMenu = document.querySelector('.accountMenu');
-
-        console.log(accountButton + " " + accountMenu)
-        if(loggedIn)
-            accountButton.addEventListener('click', ()=>{
-                console.log("clicked")
-                accountButton.classList.toggle('accountButton-active')
-                accountMenu.classList.toggle('accountMenu-active')
-            })
+        if(isClient){
+            const accountButton = document.querySelector('.accountButton');
+            const accountMenu = document.querySelector('.accountMenu');
+    
+            console.log(accountButton + " " + accountMenu)
+            if(loggedIn)
+                accountButton.addEventListener('click', ()=>{
+                    console.log("clicked")
+                    accountButton.classList.toggle('accountButton-active')
+                    accountMenu.classList.toggle('accountMenu-active')
+                })
+        }
     }, [])
-
-
 
     const logoutHandler = () => {
         Cookies.remove('isLoggedIn');
