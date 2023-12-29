@@ -21,7 +21,7 @@ export default function Drafts(isDraftSaved, setIsDraftSaved) {
       
         const authcookie = getCookieValue('Authorization');
       
-        axios.get('http://localhost:4000/seemail', {
+        axios.get('https://mailflow-production.up.railway.app/seemail', {
               headers: {
                 'x-api-key': '54321a',
                 Authorization: decodeURIComponent(authcookie),
