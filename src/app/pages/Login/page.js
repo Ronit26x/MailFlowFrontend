@@ -32,7 +32,7 @@ export default function Login(){
             const data = Object.fromEntries(formData);
             const loginEmail = data.loginEmail;
     
-            axios.post('http://localhost:4000/signin', data, {
+            axios.post('https://mailflow-production.up.railway.app/signin', data, {
                 headers: {
                 'x-api-key': "54321a",
               }

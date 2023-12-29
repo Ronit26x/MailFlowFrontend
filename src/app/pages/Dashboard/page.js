@@ -76,7 +76,7 @@ export default function Dashboard(){
             const finalEmail = document.querySelector('.paraphrasedEmail') 
             const formData = new FormData(form);
             const promptData = Object.fromEntries(formData);
-            axios.post('http://localhost:4000/genemail', promptData, {
+            axios.post('https://mailflow-production.up.railway.app/genemail', promptData, {
                     headers: {
                       'x-api-key': "54321a"
                    }
@@ -113,7 +113,7 @@ export default function Dashboard(){
             const authcookie = getCookieValue('Authorization');
     
             if(draftEmailBody && draftEmailTitle){
-                axios.post('http://localhost:4000/saveDraft', draft, {
+                axios.post('https://mailflow-production.up.railway.app/saveDraft', draft, {
                     headers: {
                       'x-api-key': "54321a",
                       'Authorization': decodeURIComponent(authcookie),
