@@ -52,43 +52,26 @@ export default function Dashboard(){
         }, 5000);
     }
 
-    const sendEmailHandler = () =>{
-        setSendEmailActive(true);
-        // document.body.classList.add('disable-scroll');
-        // sendEmailActive?document.body.style.overflow="hidden" : document.body.style.overflow="auto"
-    }
-    const closeSendDialog = () =>{
-        setSendEmailActive(false)
-        document.body.classList.remove('disable-scroll');
-    }
+    // const sendEmailHandler = () =>{
+    //     setSendEmailActive(true);
+    //     // document.body.classList.add('disable-scroll');
+    //     // sendEmailActive?document.body.style.overflow="hidden" : document.body.style.overflow="auto"
+    // }
+    // const closeSendDialog = () =>{
+    //     setSendEmailActive(false)
+    //     document.body.classList.remove('disable-scroll');
+    // }
 
-    useEffect(() => {
-        return () => {
-          // Cleanup function to remove the CSS class when the component unmounts
-          document.body.classList.remove('disable-scroll');
-        };
-      }, []);
+    // useEffect(() => {
+    //     return () => {
+    //       // Cleanup function to remove the CSS class when the component unmounts
+    //       document.body.classList.remove('disable-scroll');
+    //     };
+    //   }, []);
 
     
     const promptGenerateHandler = (event) =>{
         event.preventDefault();
-        // const formData = new FormData(form);
-        //     const promptData = Object.fromEntries(formData);
-        //     axios.post('http://localhost:4000/genemail', promptData, {
-        //             headers: {
-        //               'x-api-key': "54321a"
-        //            }
-        //     })
-        //     .then(response => {
-        //         finalEmail.innerHTML = response.data;
-        //         setIsCopyToClipboardSelected(false);
-        //     })
-        //     .catch((error) => {
-        //         console.log('Error saving draft:', error);
-        //         setErrorMessage('Server Error! Please try again in a while.');
-        //         setShowErrorDialog(true);
-        //         removeErrorDialog();
-        //       });
 
         if(isClient){
             const form = document.querySelector('.promptForm');
@@ -114,7 +97,6 @@ export default function Dashboard(){
         
     }
 
-    
     const draftAdditionHandler = (req,res) =>{
         const finalEmail = document.querySelector('.paraphrasedEmail') 
         const draftEmailBody = finalEmail.innerHTML;
