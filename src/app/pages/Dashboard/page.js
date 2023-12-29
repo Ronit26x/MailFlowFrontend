@@ -18,22 +18,22 @@ const axios = require('axios');
 
 
 export default function Dashboard(){
+    const isClient = typeof window !== 'undefined';
+
     const [loggedIn, setLoggedIn] = useState('false')
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorDialog, setShowErrorDialog] = useState(false)
     const [sendEmailActive, setSendEmailActive] = useState(false);
-    const form = document.querySelector('.promptForm');
-    const finalEmail = document.querySelector('.paraphrasedEmail')
+    
     const [isDraftSaved, setIsDraftSaved] = useState(false);
     const [copyStatus, setCopyStatus] = useState('');
     const [isCopyToClipboardSelected, setIsCopyToClipboardSelected] = useState(false);
 
-    const isClient = typeof window !== 'undefined';
 
-    const [_document, set_document] = useState(null);
-    useEffect(() => {
-        set_document(document)
-    }, [])
+    // const [_document, set_document] = useState(null);
+    // useEffect(() => {
+    //     set_document(document)
+    // }, [])
     
     
     useEffect(()=>{
@@ -41,6 +41,8 @@ export default function Dashboard(){
             const isLoggedIn = Cookies.get('isLoggedIn');
             setLoggedIn(isLoggedIn)  
         }, 1000) 
+
+        return () => clearInterval(intervalId);
     }, [])
 
     
@@ -52,7 +54,7 @@ export default function Dashboard(){
 
     const sendEmailHandler = () =>{
         setSendEmailActive(true);
-        document.body.classList.add('disable-scroll');
+        // document.body.classList.add('disable-scroll');
         // sendEmailActive?document.body.style.overflow="hidden" : document.body.style.overflow="auto"
     }
     const closeSendDialog = () =>{
@@ -70,8 +72,27 @@ export default function Dashboard(){
     
     const promptGenerateHandler = (event) =>{
         event.preventDefault();
+        // const formData = new FormData(form);
+        //     const promptData = Object.fromEntries(formData);
+        //     axios.post('http://localhost:4000/genemail', promptData, {
+        //             headers: {
+        //               'x-api-key': "54321a"
+        //            }
+        //     })
+        //     .then(response => {
+        //         finalEmail.innerHTML = response.data;
+        //         setIsCopyToClipboardSelected(false);
+        //     })
+        //     .catch((error) => {
+        //         console.log('Error saving draft:', error);
+        //         setErrorMessage('Server Error! Please try again in a while.');
+        //         setShowErrorDialog(true);
+        //         removeErrorDialog();
+        //       });
 
         if(isClient){
+            const form = document.querySelector('.promptForm');
+            const finalEmail = document.querySelector('.paraphrasedEmail') 
             const formData = new FormData(form);
             const promptData = Object.fromEntries(formData);
             axios.post('http://localhost:4000/genemail', promptData, {
@@ -95,6 +116,7 @@ export default function Dashboard(){
 
     
     const draftAdditionHandler = (req,res) =>{
+        const finalEmail = document.querySelector('.paraphrasedEmail') 
         const draftEmailBody = finalEmail.innerHTML;
         const draftEmailTitle = document.querySelector('.paraphrasedEmailTitle').value;
 
