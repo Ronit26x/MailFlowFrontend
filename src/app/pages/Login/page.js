@@ -77,7 +77,7 @@ export default function Login(){
                         <input name="loginPassword" type='password' required></input>
                     </div>
                     <p className="font-semibold flex flex-row-reverse mr-8 cursor-pointer">Forgot Password?</p>
-                    <button type='submit' className='w-[300px] h-[40px] bg-blue-700 mx-auto rounded-[10px] text-white mt-2'>Create account.</button>
+                    <button type='submit' className='w-[300px] h-[40px] bg-blue-700 mx-auto rounded-[10px] text-white mt-2'>Login.</button>
                 </form>
                 <p>Dont have an account? <span><Link href="../pages/Signup" className='text-blue-700'>Sign up.</Link></span></p>
             </div>
