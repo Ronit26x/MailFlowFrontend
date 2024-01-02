@@ -66,7 +66,7 @@ export default function Navbar(){
                     <div className="relative">
                         <p className="accountButton ">Account</p>
                         <div className="accountMenu">
-                            <p className="py-2 font-bold text-xl hover:text-blue-700 cursor-pointer">Arnav Jain</p>
+                            <p className="py-2 font-bold text-xl hover:text-blue-700 cursor-pointer">User</p>
                             <Link href="/pages/Account" className=" py-2 cursor-pointer hover:text-blue-700">Open Account</Link>
                             <p onClick={logoutHandler} className=" py-2 cursor-pointer hover:text-blue-700">Logout</p>
                         </div>

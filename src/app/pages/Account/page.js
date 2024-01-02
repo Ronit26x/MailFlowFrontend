@@ -23,7 +23,7 @@ export default function Account(){
             {
                 loggedIn ? (<section className="min-h-[90vh] py-4 px-16">
                 <div className="flex items-center gap-8">
-                    <h1 className="text-6xl font-bold">Hello, Arnav Jain</h1>
+                    <h1 className="text-6xl font-bold">Hello, User</h1>
                     <Lottie animationData={accountHelloAnimation} className="h-[20vh]"/>
                 </div>
                 <div className="grid grid-flow-col col-span-3 gap-8 mt-8">
